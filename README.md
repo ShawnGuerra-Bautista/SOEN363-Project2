@@ -4,7 +4,7 @@ Dataset used for SOEN 363 Project 2
 ## How to install the required packages?
 - Install Couchbase Community edition
 - https://www.couchbase.com/downloads
-- By default, you db will be running on http://localhost:8091/
+- By default, your db will be running on http://localhost:8091/
 
 ## How to download the dataset?
 - Create a Kaggle Account and download the following dataset
@@ -17,4 +17,27 @@ Dataset used for SOEN 363 Project 2
 - Also, for each statement executed, make sure you rename the first part to anything you want, and delete the remaining parts
 
 ## How to run the code?
-- All details about running the code are in the report (only the prof has access to it).
+- On http://localhost:8091/, create 2 buckets called python_posts and python_posts_tags
+- Run the following code in your command line to load
+```
+/opt/couchbase/bin/cbimport csv -c localhost:8091 -u "your username w/o quotes" -p "your password w/o quotes" -b python_posts -d file:///python_question_data/Questions.csv --generate-key question::%Id%
+
+/opt/couchbase/bin/cbimport csv -c localhost:8091 -u "your username w/o quotes" -p "your password w/o quotes" -b python_posts -d file:///python_question_data/Answers.csv --generate-key answer::%Id%
+
+/opt/couchbase/bin/cbimport csv -c localhost:8091 -u "your username w/o quotes" -p "your password w/o quotes" -b python_posts_tags -d file:///python_question_data/Tags.csv --generate-key tag::%Id%::%Tag%
+```
+- Go back to http://localhost:8091/ and execute the following queries
+```
+CREATE INDEX ix_Title ON python_posts(Title);
+CREATE INDEX ix_ParentId ON python_posts(ParentId);
+
+UPDATE python_posts
+SET type = ‘question’
+WHERE Title IS NOT MISSING;
+
+UPDATE python_posts
+SET type = ‘question’
+WHERE ParentId IS NOT MISSING;
+```
+- You are now ready to run your code, but create all the necessary indices first
+- Good luck!
