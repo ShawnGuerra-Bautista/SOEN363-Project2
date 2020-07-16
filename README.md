@@ -1,5 +1,5 @@
-# SOEN363-Project2
-Dataset used for SOEN 363 Project 2
+# Python Questions from Stackoverflow Couchbase Database Project
+Dataset used for a class project
 
 ## How to install the required packages?
 - Install Couchbase Community edition
